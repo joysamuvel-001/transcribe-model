@@ -1,0 +1,25 @@
+
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root { height: 100%; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #0d0d0d;
+  color: #111;
+  -webkit-font-smoothing: antialiased;
+}
+
+svg { display: block; }
+button { font-family: inherit; cursor: pointer; }
+
+/* Full-screen two-column shell */
+.app-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  grid-template-rows: 1fr;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+}

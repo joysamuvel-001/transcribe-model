@@ -1,0 +1,128 @@
+
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: #f6f7f9;
+  overflow: hidden;
+}
+
+/* ---- Top bar ---- */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8eaed;
+  flex-shrink: 0;
+}
+
+.topBarTitle {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #333;
+}
+
+.topBarMeta {
+  font-size: 0.72rem;
+  color: #aaa;
+}
+
+/* ---- Messages ---- */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.messages::-webkit-scrollbar       { width: 4px; }
+.messages::-webkit-scrollbar-track { background: transparent; }
+.messages::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+
+/* ---- Empty state ---- */
+.emptyState {
+  margin: auto;
+  text-align: center;
+  max-width: 340px;
+  padding: 60px 0;
+}
+
+.emptyIcon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 20px;
+  color: #ccc;
+}
+.emptyIcon svg { width: 100%; height: 100%; }
+
+.emptyTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.emptyBody {
+  font-size: 0.82rem;
+  color: #aaa;
+  line-height: 1.7;
+}
+
+/* ---- Processing ---- */
+.processingRow { display: flex; justify-content: center; }
+
+.processingPill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #e8eaed;
+  border-radius: 30px;
+  padding: 9px 22px;
+  font-size: 0.78rem;
+  color: #888;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid #e0e0e0;
+  border-top-color: #555;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---- Error ---- */
+.errorRow { display: flex; justify-content: center; }
+
+.errorPill {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #fff8f8;
+  border: 1px solid #f0d5d5;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 0.8rem;
+  color: #7a2020;
+  max-width: 500px;
+}
+
+.errorPill svg {
+  width: 15px;
+  height: 15px;
+  stroke: #b94040;
+  flex-shrink: 0;
+  margin-top: 1px;
+}

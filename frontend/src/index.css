@@ -1,0 +1,3 @@
+/* Reset everything — let global.css own all layout */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; width: 100%; }

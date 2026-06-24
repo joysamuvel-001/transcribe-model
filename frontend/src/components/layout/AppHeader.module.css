@@ -1,0 +1,84 @@
+/* components/Layout/AppHeader.module.css */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  flex-shrink: 0;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-size: 0.68rem;
+  color: #aaa;
+  letter-spacing: 0.02em;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ---- Legend ---- */
+.legend {
+  display: flex;
+  gap: 14px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendDoctor .legendDot { background: #1a1a1a; }
+.legendPatient .legendDot { background: #c8c8c8; border: 1px solid #aaa; }
+
+/* ---- Clear button ---- */
+.clearBtn {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 5px 7px;
+  cursor: pointer;
+  color: #999;
+  display: flex;
+  align-items: center;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.clearBtn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.clearBtn:hover {
+  border-color: #c0392b;
+  color: #c0392b;
+}
