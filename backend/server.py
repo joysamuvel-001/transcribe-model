@@ -8,6 +8,7 @@ from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from correction.medgemma import correct_medical_terms
 from audio_utils.converter import convert_to_wav
 from diarization.model import run_diarization
 from diarization.speaker import process_diarization
@@ -77,11 +78,13 @@ async def transcribe(audio: UploadFile = File(...)):
         print(f"[server] {len(labeled_segments)} segments after diarization")
 
         labeled_segments = _identify_segments(wav_path, labeled_segments, tmp_dir)
+        labeled_segments = _smooth_short_unknowns(labeled_segments)
         labeled_segments = merge_by_identity(labeled_segments)
 
         print(f"[server] {len(labeled_segments)} segments after identity merge")
 
         conversation = transcribe_segments(wav_path, labeled_segments, tmp_dir)
+        conversation = correct_medical_terms(conversation)
         full_text    = " ".join(t["text"] for t in conversation)
 
         return {"text": full_text, "conversation": conversation}
@@ -144,6 +147,32 @@ def _identify_segments(wav_path: str, segments: list, tmp_dir: str) -> list:
         seg["speaker"]    = result["name"]        # real name OR "SPEAKER_xx"
         seg["similarity"] = result.get("score", 0.0)
         seg["identified"] = result["name"] not in (diarized_label, "Unknown")
+
+    return segments
+
+def _smooth_short_unknowns(segments: list, max_short_duration: float = 2.5, max_gap: float = 2.0) -> list:
+    """
+    Short segments give unreliable TitaNet embeddings on their own.
+    If a short/unidentified segment is sandwiched between two confidently
+    identified turns from the SAME speaker, with small gaps, assume it's
+    that speaker too — neighbor context beats a shaky standalone embedding.
+    """
+    for i in range(1, len(segments) - 1):
+        seg = segments[i]
+        duration = seg["end"] - seg["start"]
+        if seg.get("identified") or duration > max_short_duration:
+            continue
+
+        prev_seg, next_seg = segments[i - 1], segments[i + 1]
+        if (prev_seg["speaker"] == next_seg["speaker"]
+                and prev_seg.get("identified") and next_seg.get("identified")):
+            gap_before = seg["start"] - prev_seg["end"]
+            gap_after  = next_seg["start"] - seg["end"]
+            if gap_before <= max_gap and gap_after <= max_gap:
+                print(f"[server] Smoothing '{seg['speaker']}' ({duration:.1f}s) -> '{prev_seg['speaker']}' via neighbors")
+                seg["speaker"]    = prev_seg["speaker"]
+                seg["identified"] = True
+                seg["smoothed"]   = True
 
     return segments
 
